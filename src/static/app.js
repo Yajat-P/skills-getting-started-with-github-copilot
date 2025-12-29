@@ -27,6 +27,40 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
         `;
 
+        // Participants section (build with DOM to avoid HTML injection)
+        const participantsSection = document.createElement("div");
+        participantsSection.className = "participants-section";
+
+        const participantsCount = document.createElement("div");
+        participantsCount.className = "participants-count";
+        const participantList = Array.isArray(details.participants) ? details.participants : [];
+
+        participantsCount.textContent = participantList.length
+          ? `${participantList.length} participant${participantList.length > 1 ? "s" : ""}`
+          : "No participants yet";
+
+        participantsSection.appendChild(participantsCount);
+
+        const ul = document.createElement("ul");
+        ul.className = "participants-list";
+
+        if (participantList.length > 0) {
+          participantList.forEach((p) => {
+            const li = document.createElement("li");
+            li.className = "participant-item";
+            li.textContent = p;
+            ul.appendChild(li);
+          });
+        } else {
+          const li = document.createElement("li");
+          li.className = "participant-item empty";
+          li.textContent = "Be the first to sign up!";
+          ul.appendChild(li);
+        }
+
+        participantsSection.appendChild(ul);
+        activityCard.appendChild(participantsSection);
+
         activitiesList.appendChild(activityCard);
 
         // Add option to select dropdown
